@@ -1,9 +1,21 @@
 #content {
+
   margin-left: auto;
   margin-right: auto;
   width: 650px;
+  float: left;
+  padding-left: 100px;
 }
 
 #greeting-container {
   margin-top: 20px;
+}
+
+div.iroh {
+    position: relative;
+  top: 80px;
+  float: left;
+  height: 300px;
+  width: 200px;
+  border: 3px solid #73AD21;
 }
