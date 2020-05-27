@@ -1,50 +1,100 @@
 
 body {
-  background-color: gray;
-  
+  background-color: #f1f1f1;
+  margin : 0;
+}
+
+h1{
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-top : 0px;
+  font-size: .75cm;
+  font-family: Trebuchet MS;
+}
+section.Fheader {
+    float: top;
+    background-color: rgb(193, 208, 231);
+    height: fit-content;
+    margin-top: 0;
+}
+p.iquote {
+    text-align: center;
+}
+
+section.entry {
+    float:top;
+    width : 100%;
+    background-color: white;
+}
+
+section.Intro {
+    float:center;
+    width : 100%;
+    font-style: italic;
 }
 
 .navbar {
   overflow: hidden;
   position: fixed; /* Set the navbar to fixed position */
-  bottom: 0; /* Position the navbar at the top of the page */
-  width: 25%; /* Full width */
+  top: 0; /* Position the navbar at the top of the page */
+  width: fit-content; /* Full width */
+  background-color: rgba(225, 245, 255, 0.301);
+  right: 0;
+  height: fit-content;
 }
+
 
 .navbar a {
-  float: left;
+  float: right;
   width: fit-content;
-  color: #f2f2f2;
+  color: rgb(55, 79, 99);
   text-align: center;
   text-decoration: none;
-  font-size: medium;
-  border-radius: 50%;
-  margin-left:  2%;
+  font-size: x-large;
+  margin-left:10px;
+  margin-right: 10px;
 }
 
+
 .navbar a:hover {
-  background: #ddd;
-  color: black;
+  color: #316fc5;
   font-size: x-large;
 }
 
-#content {
+h3 {
+    margin : 0;
+    color: #7396cc;
+    font-family: monospace;
+    font-size: .65cm;
+    font-style: oblique;
+}
 
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+section.content {
   float: center;
-  padding-left: 100px;
+  width: 100%;
 }
-
-div.home {
+hr {
     float: center;
+    width : 60%;
+    height: 1px;
+    border: none;
+    background-color: #aed5f7;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
-
 #greeting-container {
   margin-top: 20px;
 }
-
+div.entryTitle {
+    float: left;
+    width: 13%;
+    height: 3cm;
+}
+div.entry {
+    float: left;
+    width: 35%;
+    height: fit-content;
+}
 div.iroh {
     position: relative;
   top: 80px;
