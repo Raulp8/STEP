@@ -5,6 +5,8 @@
     <title>Raul Palomo Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script src="fade-scroll.js"></script>
     <script src="script.js"></script>
   </head>
   <body>
@@ -30,59 +32,110 @@
     
     <hr>
 
-    <section id = "about" class = "content"> 
+    <section id = "tExp" class = "content"> 
         <div class = "entryTitle">
-            <h3> About </h3>
+            <h3> Technical Experience 
+                <br> +Education </h3>
         </div>
-        <div class = "entry">
-            <h4>Education</h4>
-            <p> 
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Duis dictum molestie nibh, nec porta magna lacinia ut. 
-                In hendrerit orci arcu, et luctus mauris consectetur dignissim.
-                 Donec lorem elit, mollis rutrum scelerisque sed, tincidunt varius
-                 lla. Curabitur placerat libero quis dui ultricies tristique. Sed
-                  gravida, ante eget luctus facilisis, urna magna molestie magna, 
-                  id eleifend tellus lorem vitae sapien. Morbi velit nisl, porta 
-                  in mauris sed, ultrices blandit libero. Duis malesuada finibus 
-                  vestibulum. Quisque luctus id sem vel rutrum. Cras tempor sem mi,
-                   vel malesuada lectus elementum sed. Aliquam erat volutpat. 
-                   Curabitur quis mollis lectus.
-            </p>
+        <div class = "entryContainer" >
+            <div class = "entry">
+                <h4>Education & Experience </h4>
+                <img class = "fade-scroll-bottom" src = "https://coursera-university-assets.s3.amazonaws.com/0a/f036c28cee4d77a78b078d73cb3f0a/University_Lockups_Digital_Rice_Blue_300x300.png">
+                <p>B.S., Computer Science, <a href = "https://www.rice.edu/">Rice University </a>
+                <br> Enrollment Date : August, 2018
+                <br> Expected Graduation Date: May, 2022
+                </p>
+                <p>Elizabeth High School, Frank J. Cicarell Academy
+                <br>Graduation Date: June, 2018
+                </p>
+                <img class = "goog fade-scroll-bottom" src = "/images/glogo.png">
+                <p> Google STEP Intern, Summer 2020
+                </p>
+
+            </div>
+            <div class = "entry">
+                <h4>Courses</h4>
+                    <ul class="cor">
+                        Fall 2018
+                        <li> COMP 140 - Intro to Computational Thinking (Python) </li>
+                    </ul>
+                    <ul class = "cor">
+                        Spring 2019
+                        <li> COMP 182 - Discrete Math / Algorithms (Python) </li>
+                        <li> ELEC 220 - Fundamental of Computer Engineering (C) </li>
+                        <li> MATH 212 - Multivariable Calculus </li>
+                    </ul>
+                    <ul class = "cor">
+                        Fall 2019
+                        <li> COMP 215 - Program Design/Functional Programming (Java) </li>
+                        <li> COMP 382 - Advanced Algorithms </li>
+                        <li> MATH 355 - Linear Algebra </li>
+                    </ul>
+                    <ul class = "cor">
+                        Spring 2020
+                        <li> COMP 321 - Computer Systems (C) </li>
+                        <li> COMP 322 - Parallel Programming (Java) </li>
+                        <li> STAT 310 - Probability and Statistics </li>
+                    </ul>
+                    <ul class = "cor">
+                        Fall 2020
+                        <li> COMP 310 - Object Oriented Programming (Java) </li>
+                        <li> COMP 418 - IOT Programming and Data Analysis </li>
+                    </ul>
+            </div> 
+            <div class = "entry">
+                <h4>Technical Projects</h4>
+                <ul class = "cor">
+                    <li> Memory Match - Engineering project using hardware components to create a memory game. </li>
+                    <li> DiscordBot - created a discord bot that would respond to user input. </li>
+                    <li> Proxy Server - Created Proxy Server that handled GET requests (COMP 321) </li>
+                    <li> Memory Allocator - Created dynamic memory allocator reaching efficient throughput and spatial usage (COMP 321) </li>
+                </ul>
+
+            </div> 
+            <div class = "entry">
+                <h4>Skills</h4>
+                <p>Proficient: Python, Java, C
+                   <br>
+                   Familiar: JavaScript, HTML/CSS, Angular, Typescript
+                </p>
+            </div> 
+            <br>
+            <br>
+            <br>
+            <br>
         </div>
-        <div class = "entry">
-            <h4>CourseWork</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Duis dictum molestie nibh, nec porta magna lacinia ut. 
-                In hendrerit orci arcu, et luctus mauris consectetur dignissim.
-                 Donec lorem elit, mollis rutrum scelerisque sed, tincidunt varius
-                 lla. Curabitur placerat libero quis dui ultricies tristique. Sed
-                  gravida, ante eget luctus facilisis, urna magna molestie magna, 
-                  id eleifend tellus lorem vitae sapien. Morbi velit nisl, porta 
-                  in mauris sed, ultrices blandit libero. Duis malesuada finibus 
-                  vestibulum. Quisque luctus id sem vel rutrum. Cras tempor sem mi,
-                   vel malesuada lectus elementum sed. Aliquam erat volutpat. 
-                   Curabitur quis mollis lectus.
-             </p>
-        </div> 
-        <div class = "entry">
-            <h4>CourseWork</h4>
-            <p> comp 322 </p>
-        </div> 
-        <div class = "entry">
-            <h4>CourseWork</h4>
-            <p> comp 322 </p>
-        </div> 
-        <br>
-        <br>
-        <br>
-        <br>
     </section>
     <hr>
-    <section id = "contact" class = "content">
-        <h3> Contact </h3>
-        <lu> hi </lu>
+    <section id = "oExp" class = "content">
+        <div class = "entryTitle">
+        <h3> Other Experience </h3>
+        </div>
+        <div class = "entryContainer" >
+            <div class = "entry">
+                <h4> RemixCS </h4>
+                <img class = "goog fade-scroll-bottom" src="/images/remixcs.svg">
+                <p>
+                    Rice University club dedicated to expanding 
+                    Computer Science oppurtunities to underrepresented 
+                    groups in Houston area. As the curriculum and 
+                    teaching committees liason I, developed curriculum 
+                    and teaching materials, held weekly teaching sessions
+                    to groups of 15 students, and structured communcation
+                    and meetings between the teaching and curriculum committees to facilate
+                    teaching sessions and on-campus events.
+                    <br> Spring, 2019 - Spring, 2020
+                </p>
+            </div>
+            <div class = "entry">
+                <h4> Snifty Pen Intern </h4>
+                <p>
+                    Intern for manufacturing company, oversaw
+                     delivery to retailers and individuals.
+                    <br> Summer, 2019
+                </p>
+            </div>
+        </div>
         <br>    
         <br>
         <br>
@@ -91,7 +144,8 @@
     <hr>
 	<section class = "navbar">
         <a href="#contact">contact</a>
-        <a href = "#about">about</a>
+        <a href="#oExp">Other</a>
+        <a href = "#tExp">Tech. Exp.</a>
         <a href="#home">Home</a>
     </section>
   </body>

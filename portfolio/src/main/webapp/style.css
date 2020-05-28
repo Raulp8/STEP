@@ -3,7 +3,16 @@ body {
   background-color: #f1f1f1;
   margin : 0;
 }
+p {
+  color: #33475e
+}
 
+ul.cor {
+  color: #33475e;
+}
+h4 {
+  color: #476ead;
+}
 h1{
   margin-block-start: 0em;
   margin-block-end: 0em;
@@ -70,9 +79,15 @@ h3 {
 }
 
 section.content {
-  float: center;
+  float: left;
   width: 100%;
+  height: fit-content;
+  overflow: hidden;
 }
+ul.cor {
+    float: left;
+}
+
 hr {
     float: center;
     width : 60%;
@@ -85,15 +100,21 @@ hr {
 #greeting-container {
   margin-top: 20px;
 }
+div.entryContainer {
+    float: left;
+    height: fit-content;
+    width: 60%;
+}
 div.entryTitle {
     float: left;
-    width: 13%;
-    height: 3cm;
+    width: 25%;
+    height: 100%;
 }
 div.entry {
     float: left;
-    width: 35%;
+    width: 40%;
     height: fit-content;
+    margin-right: 5%;
 }
 div.iroh {
     position: relative;
@@ -102,4 +123,9 @@ div.iroh {
   height: 300px;
   width: 200px;
   border: 3px solid #73AD21;
+}
+
+img.goog {
+    width : 180px;
+    height : 180px;
 }
