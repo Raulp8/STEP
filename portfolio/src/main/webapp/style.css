@@ -19,6 +19,9 @@ h1{
   margin-top : 0px;
   font-size: .75cm;
   font-family: Trebuchet MS;
+  color: white;
+  text-shadow: -2px 0  black;
+
 }
 section.Fheader {
     float: top;
@@ -28,6 +31,32 @@ section.Fheader {
 }
 p.iquote {
     text-align: center;
+}
+section.banner {
+    width: 100%;
+    overflow: hidden;
+    height: 10cm;
+}
+div.bdiv {
+    margin-left: 33%;
+    margin-right: 33%;
+    width: 30%;
+}
+p.blurb {
+    text-align: center;
+}
+a.clinks {
+    margin-left: 4%;
+    margin-right: 4%;
+    color: blue;
+}
+
+img.ban {
+    width: 100%;
+}    
+img.wide {
+    width: 100%;
+    height: auto;
 }
 
 section.entry {
@@ -99,6 +128,7 @@ hr {
 }
 #greeting-container {
   margin-top: 20px;
+  font-style: italic;
 }
 div.entryContainer {
     float: left;
@@ -116,15 +146,11 @@ div.entry {
     height: fit-content;
     margin-right: 5%;
 }
-div.iroh {
-    position: relative;
-  top: 80px;
-  float: left;
-  height: 300px;
-  width: 200px;
-  border: 3px solid #73AD21;
-}
 
+img.edge {
+    width: 125px;
+    margin-left: 25%
+}
 img.goog {
     width : 180px;
     height : 180px;

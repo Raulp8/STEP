@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery.min.js"></script>
-    <script src="fade-scroll.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="script.js"></script>
   </head>
   <body>
@@ -14,28 +14,30 @@
     <section id = "home" class ="Fheader">
         <h1> Raul Ricardo Palomo </h1>
     </section>
-    <br>
-    <!-- <div class="iroh">
-        <h3> Iroh's Wisdom </h3>
-        <p>Click here to for a quote from Uncle Iroh</p>
-      <button onclick="addRandomGreeting()">&#127861</button>
-      <div id="greeting-container"></div>
-    </div> -->
-    <section class = "Intro">
-        <p class = "iquote"> Quote here </p>
-    </section>
 
-    <section class="content">
-      <img src="/images/portfolio.jpeg">
-      <p> Hello! I'm a Third Year Computer Science Major from New Jersey! </p>
-    </section>
-    
+    <section class=" banner">
+        <img class = "ban" src = "/images/ban.jpg">
+    </section> 
+    <div class = "bdiv">
+        <p class="blurb"> Welcome to my page!
+         I hope that this page makes it easier to find information
+         about me. If you have any questions, please use
+         the following to reach out and learn even more.</p>
+        <div style="margin-left: 33%; margin-right: 33%;">
+        <a class = "clinks" style="text-decorations:none; color:inherit;" href="mailto:raulpalomo8@gmail.com"><i style="color: #324656;font-size: x-large;" class="fas fa-envelope"></i></a>
+        <a class = "clinks" style="text-decorations:none; color:inherit;" href="https://github.com/Raulp8/"><i style="color: #324656;font-size: x-large;" class="fab fa-github"></i></a>
+        <a class = "clinks" style="text-decorations:none; color:inherit;" href="https://www.facebook.com/raul.palomo.1048"><i style="color: #324656;font-size: x-large;" class="fab fa-facebook-square"></i></a>
+        </div>
+    </div>
     <hr>
 
     <section id = "tExp" class = "content"> 
         <div class = "entryTitle">
             <h3> Technical Experience 
                 <br> +Education </h3>
+            <br>
+            <br>
+            <img class = "edge" src = "/images/wspace.gif">
         </div>
         <div class = "entryContainer" >
             <div class = "entry">
@@ -136,14 +138,48 @@
                 </p>
             </div>
         </div>
-        <br>    
-        <br>
-        <br>
-        <br>
     </section>
     <hr>
+    <section id = "per" class = "content">
+        <div class = "entryTitle">
+        <h3> Personal </h3>
+    </div>
+        </div>    
+        <div class = entryContainer>
+            <div class = "entry">
+                <h4> Hobbies and Interests </h4>
+                <p> Outside of formal pursuits I like
+                    to decompress by playing video 
+                    games, cooking, and working out.
+                    Nowadays, i enjoy this team-based game called SMITE.
+                </p>
+            </div>
+            <div class = "entry">
+                <h4> Personality and Team Skills </h4>
+                <p> Having been in several working environment structures
+                    I believe to work best in a flat structure where 
+                    responsibility is properly distributed, and where progress and development
+                    are consistently reviewed.
+                </p>
+            </div>
+            <br>
+            <br>
+            <img style = "margin-left: 20%;"src = "/images/portfolio.jpeg">
+            <br>
+            <br>
+            <hr>
+            <div class="iroh">
+        <h4> Iroh's Wisdom </h3>
+        <p>Click here for a quote from one of my favorite TV characters</p>
+      <button onclick="addRandomGreeting()">&#127861</button>
+      <div id="greeting-container"></div>
+
+        </div>
+        <br><br>
+    </section>
+   
 	<section class = "navbar">
-        <a href="#contact">contact</a>
+        <a href="#per">Per.</a>
         <a href="#oExp">Other</a>
         <a href = "#tExp">Tech. Exp.</a>
         <a href="#home">Home</a>
