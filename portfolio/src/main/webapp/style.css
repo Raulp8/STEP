@@ -1,9 +1,157 @@
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+
+body {
+  background-color: #f1f1f1;
+  margin : 0;
+}
+p {
+  color: #33475e
 }
 
+ul.cor {
+  color: #33475e;
+}
+h4 {
+  color: #476ead;
+}
+h1{
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+  margin-top : 0px;
+  font-size: .75cm;
+  font-family: Trebuchet MS;
+  color: white;
+  text-shadow: -2px 0  black;
+
+}
+section.Fheader {
+    float: top;
+    background-color: rgb(193, 208, 231);
+    height: fit-content;
+    margin-top: 0;
+}
+p.iquote {
+    text-align: center;
+}
+section.banner {
+    width: 100%;
+    overflow: hidden;
+    height: 10cm;
+}
+div.bdiv {
+    margin-left: 33%;
+    margin-right: 33%;
+    width: 30%;
+}
+p.blurb {
+    text-align: center;
+}
+a.clinks {
+    margin-left: 4%;
+    margin-right: 4%;
+    color: blue;
+}
+
+img.ban {
+    width: 100%;
+}    
+img.wide {
+    width: 100%;
+    height: auto;
+}
+
+section.entry {
+    float:top;
+    width : 100%;
+    background-color: white;
+}
+
+section.Intro {
+    float:center;
+    width : 100%;
+    font-style: italic;
+}
+
+.navbar {
+  overflow: hidden;
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: fit-content; /* Full width */
+  background-color: rgba(225, 245, 255, 0.301);
+  right: 0;
+  height: fit-content;
+}
+
+
+.navbar a {
+  float: right;
+  width: fit-content;
+  color: rgb(55, 79, 99);
+  text-align: center;
+  text-decoration: none;
+  font-size: x-large;
+  margin-left:10px;
+  margin-right: 10px;
+}
+
+
+.navbar a:hover {
+  color: #316fc5;
+  font-size: x-large;
+}
+
+h3 {
+    margin : 0;
+    color: #7396cc;
+    font-family: monospace;
+    font-size: .65cm;
+    font-style: oblique;
+}
+
+section.content {
+  float: left;
+  width: 100%;
+  height: fit-content;
+  overflow: hidden;
+}
+ul.cor {
+    float: left;
+}
+
+hr {
+    float: center;
+    width : 60%;
+    height: 1px;
+    border: none;
+    background-color: #aed5f7;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 #greeting-container {
   margin-top: 20px;
+  font-style: italic;
+}
+div.entryContainer {
+    float: left;
+    height: fit-content;
+    width: 60%;
+}
+div.entryTitle {
+    float: left;
+    width: 25%;
+    height: 100%;
+}
+div.entry {
+    float: left;
+    width: 40%;
+    height: fit-content;
+    margin-right: 5%;
+}
+
+img.edge {
+    width: 125px;
+    margin-left: 25%
+}
+img.goog {
+    width : 180px;
+    height : 180px;
 }

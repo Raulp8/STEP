@@ -125,7 +125,6 @@ get more specific instructions each week.
 You finished this introduction!
 
 Next, you'll write HTML and JavaScript to create a portfolio page, and you'll
-deploy it to App Engine so anyone can visit it.
 
 When you're ready, start the next walkthrough by running this command:
 
