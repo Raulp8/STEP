@@ -40,4 +40,10 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(gson.toJson(messages));
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String comment = request.getParameter("text-input");
+      System.out.println(comment);
+  }
+
 }
