@@ -63,7 +63,7 @@ function addRandomGreeting() {
  * Fetches a random quote from the server and adds it to the DOM.
  */
 function getSmessage() {
-  fetch('/data').then(response => response.text()).then((quote) => {
+  fetch('/data').then(response => response.json()).then((quote) => {
     document.getElementById('scon').innerText = quote;
   });
 }
