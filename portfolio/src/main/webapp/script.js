@@ -67,3 +67,23 @@ function getSmessage() {
     document.getElementById('scon').innerText = quote;
   });
 }
+
+function getComments() {
+    console.log("get comments called");
+    fetch('/messages').then(response => response.json()).then((comments) => {
+        console.log("received comments: ");
+        console.log(comments);
+        const commentListEle = document.getElementById('comments-container');
+        commentListEle.innerHTML = '';
+        var i;
+        for(i = 0; i < comments.length; i++){
+            commentListEle.appendChild(createListElement(comments[i]));
+        }
+    });
+}
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}

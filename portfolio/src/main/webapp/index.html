@@ -9,7 +9,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="getComments()">
      <!-- Foreground Header (Name)  -->
     <section id = "home" class ="Fheader">
         <h1> Raul Ricardo Palomo </h1>
@@ -173,8 +173,12 @@
         <p>Click here for a quote from one of my favorite TV characters</p>
       <button onclick="addRandomGreeting()">&#127861</button>
       <div id="greeting-container"></div>
-        <h5> Server Request </h5>  
-        <form action="/" method="POST">
+
+      </div>
+
+        <h5> Comments </h5>  
+        <ul id="comments-container">comments</ul>
+        <form action="/messages" method="POST">
 
             <p>Enter a comment about my page!</p>
             <textarea name="text-input">one, two, three</textarea>
@@ -184,7 +188,6 @@
             <input type="submit" />
         </form>
 
-        </div>
         <br><br>
     </section>
    
