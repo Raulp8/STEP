@@ -21,7 +21,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 
 
@@ -32,22 +37,34 @@ public class MessageServlet extends HttpServlet {
 
     static Gson gson = new Gson();
     ArrayList<String> comments = new ArrayList();
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query commentQuery = new Query("Comment");
+
 
     
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
+
+    PreparedQuery commentResults = datastore.prepare(commentQuery);
+    for (Entity entry : commentResults.asIterable()) {
+        String comment = (String) entry.getProperty("value");
+        comments.add(comment);
+    }
     System.out.println("sending comments: " + comments.toString());
     response.getWriter().println(gson.toJson(comments));
+    comments.clear();
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String comment = request.getParameter("text-input");
       if (!comment.equals("")) {
-          comments.add(comment);
-         System.out.println("Adding comment: " + comment);
+        Entity commentEntity = new Entity("Comment");
+        commentEntity.setProperty("value", comment);
+        datastore.put(commentEntity);
+        System.out.println("Adding comment: " + comment);
       }
       response.sendRedirect("/");
   }
