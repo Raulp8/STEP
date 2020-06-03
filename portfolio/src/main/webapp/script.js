@@ -88,14 +88,14 @@ function getComments() {
     });
 }
 
-function addComment () {
+async function addComment () {
     var comment = document.getElementById("text-input").value;
     var url = "/messages?text-input=".concat(comment);
     param = { 
         'text-input' : comment
         }
     console.log('adding comment:\n' + comment);
-    fetch(url, {
+    await fetch(url, {
         method: 'POST',
          headers: {
           'Content-Type': 'application/json'
