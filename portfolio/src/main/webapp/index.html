@@ -179,18 +179,19 @@
         <h5> Comments </h5> 
         <select id="query-size" onchange="getComments()">
             <option value = 1>1
-            <option value = 3>3
+            <option value = 5>5
+            <option value = 10>10
         </select>
         <ul id="comments-container">comments</ul>
-        <form action="/messages" method="POST">
+        <!-- <form action="/messages" method="POST"> -->
 
             <p>Enter a comment about my page!</p>
-            <textarea name="text-input">one, two, three</textarea>
+            <textarea id="text-input">one, two, three</textarea>
             <br/><br/>
             <br/><br/>
 
-            <input type="submit" />
-        </form>
+            <button onclick="addComment()">Add Comment</button>
+        <!-- </form> -->
 
         <br><br>
     </section>

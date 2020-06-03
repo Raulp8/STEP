@@ -70,9 +70,13 @@ function getSmessage() {
 
 function getComments() {
     var querySize = document.getElementById("query-size").value;
+    console.log(querySize);
+    if (querySize == undefined) {
+        querySize = 10;
+    }
     console.log("get comments called");
     var url = '/messages?query-size='.concat(querySize.toString(10));
-    fetch(url).then(response => response.json()).then((comments) => {
+    fetch(url, {method: 'GET'}).then(response => response.json()).then((comments) => {
         console.log("received comments: ");
         console.log(comments);
         const commentListEle = document.getElementById('comments-container');
@@ -82,6 +86,22 @@ function getComments() {
             commentListEle.appendChild(createListElement(comments[i]));
         }
     });
+}
+
+function addComment () {
+    var comment = document.getElementById("text-input").value;
+    var url = "/messages?text-input=".concat(comment);
+    param = { 
+        'text-input' : comment
+        }
+    console.log('adding comment:\n' + comment);
+    fetch(url, {
+        method: 'POST',
+         headers: {
+          'Content-Type': 'application/json'
+        },
+        })
+    getComments();
 }
 
 function createListElement(text) {

@@ -70,7 +70,7 @@ public class MessageServlet extends HttpServlet {
         datastore.put(commentEntity);
         System.out.println("Adding comment: " + comment);
       }
-      response.sendRedirect("/");
+    //   response.sendRedirect("/");
   }
 
 }
