@@ -46,13 +46,17 @@ public class MessageServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
-
+    int commentSize = Integer.parseInt(request.getParameter("query-size"));
     PreparedQuery commentResults = datastore.prepare(commentQuery);
+    System.out.println("sending "+  commentSize + " comment(s)...");
     for (Entity entry : commentResults.asIterable()) {
+        if (commentSize <=0) {
+            break;
+        }
         String comment = (String) entry.getProperty("value");
         comments.add(comment);
+        commentSize--;
     }
-    System.out.println("sending comments: " + comments.toString());
     response.getWriter().println(gson.toJson(comments));
     comments.clear();
   }

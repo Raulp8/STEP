@@ -69,8 +69,10 @@ function getSmessage() {
 }
 
 function getComments() {
+    var querySize = document.getElementById("query-size").value;
     console.log("get comments called");
-    fetch('/messages').then(response => response.json()).then((comments) => {
+    var url = '/messages?query-size='.concat(querySize.toString(10));
+    fetch(url).then(response => response.json()).then((comments) => {
         console.log("received comments: ");
         console.log(comments);
         const commentListEle = document.getElementById('comments-container');
