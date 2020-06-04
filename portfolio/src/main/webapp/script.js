@@ -91,9 +91,6 @@ function getComments() {
  function addComment () {
     var comment = document.getElementById("text-input").value;
     var url = "/messages?text-input=".concat(comment);
-    param = { 
-        'text-input' : comment
-        }
     console.log('adding comment:\n' + comment);
      fetch(url, {
         method: 'POST',
@@ -107,7 +104,9 @@ function getComments() {
     var url = "/delete-data";
     fetch(url, {method: 'POST'}).then(response => {
         console.log("delete done");
-    }).then(response => getComments());
+    });
+    document.getElementById('comments-container').innerHTML = '';
+
 }
 
 function createThreadElement(text) {

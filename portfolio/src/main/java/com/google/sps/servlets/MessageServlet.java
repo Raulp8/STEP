@@ -48,7 +48,8 @@ public class MessageServlet extends HttpServlet {
 
     response.setContentType("application/json;");
     response.getWriter().println(queryResults);
-    System.out.println("fetched comments ");
+    System.out.println(queryResults);
+    
   }
 
   @Override

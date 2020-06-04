@@ -43,7 +43,7 @@ public class DeleteServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Query query = new Query("Comment");
+      Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);;
       Data.DeleteData(query);
       System.out.println("delete done");
   }

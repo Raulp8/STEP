@@ -34,8 +34,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 public class Data {
 
-    static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+    
     String text;
 
     public Data(String text) {
@@ -45,7 +44,7 @@ public class Data {
     public static JsonArray fetchComments(Query query, int numComments) {
 
         JsonArray fetchedResults = new JsonArray();
-
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery queryResults = datastore.prepare(query);
         for (Entity entry : queryResults.asIterable()) {
             if (numComments <= 0) {
@@ -60,6 +59,7 @@ public class Data {
     }
 
     public static void addToData(String input) {
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity commentEntity = new Entity("Comment");
         commentEntity.setProperty("value", input);
         commentEntity.setProperty("timestamp", System.currentTimeMillis());
@@ -68,10 +68,12 @@ public class Data {
     }
 
     public static void DeleteData (Query query) {
+         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery queryResults = datastore.prepare(query);
         for (Entity entry: queryResults.asIterable()) {
             datastore.delete(entry.getKey());
         }
+        
     }
 
 
