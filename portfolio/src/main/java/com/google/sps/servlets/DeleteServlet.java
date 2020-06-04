@@ -32,32 +32,20 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/messages")
-public class MessageServlet extends HttpServlet {
-
-    static Gson gson = new Gson();
+@WebServlet("/delete-data")
+public class DeleteServlet extends HttpServlet {
 
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-    int querySize = Integer.parseInt(request.getParameter("query-size"));
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
-    JsonArray queryResults = Data.fetchComments(query, querySize);
 
-    response.setContentType("application/json;");
-    response.getWriter().println(queryResults);
-    System.out.println("fetched comments ");
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String comment = request.getParameter("text-input");
-      if (!comment.equals("")) {
-        Data.addToData(comment);
-      }
-    //   response.sendRedirect("/");
+      Query query = new Query("Comment");
+      Data.DeleteData(query);
+      System.out.println("delete done");
   }
 
 }

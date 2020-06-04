@@ -83,29 +83,46 @@ function getComments() {
         commentListEle.innerHTML = '';
         var i;
         for(i = 0; i < comments.length; i++){
-            commentListEle.appendChild(createListElement(comments[i]));
+            commentListEle.appendChild(createThreadElement(comments[i]));
         }
     });
 }
 
-async function addComment () {
+ function addComment () {
     var comment = document.getElementById("text-input").value;
     var url = "/messages?text-input=".concat(comment);
     param = { 
         'text-input' : comment
         }
     console.log('adding comment:\n' + comment);
-    await fetch(url, {
+     fetch(url, {
         method: 'POST',
          headers: {
           'Content-Type': 'application/json'
         },
-        })
-    getComments();
+        }).then(response => getComments());
 }
 
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+ function deleteEntries () {
+    var url = "/delete-data";
+    fetch(url, {method: 'POST'}).then(response => {
+        console.log("delete done");
+    }).then(response => getComments());
+}
+
+function createThreadElement(text) {
+
+  //Create Thread Wrapper
+  var ThreadWrapper = document.createElement('div');
+  ThreadWrapper.className = "thread";
+
+  //Create Original Comment wrapper
+  var origComment = document.createElement('div');
+  ThreadWrapper.appendChild(origComment);
+  origComment.className = "origComment";
+  var textOrigComment = document.createElement('p');
+  origComment.appendChild(textOrigComment);
+  textOrigComment.innerText = text;
+
+  return ThreadWrapper;
 }

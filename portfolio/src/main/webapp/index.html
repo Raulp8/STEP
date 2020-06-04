@@ -175,14 +175,18 @@
       <div id="greeting-container"></div>
 
       </div>
-
-        <h5> Comments </h5> 
+      </section>
+      <section id = "Threads" class = "content">
+        <h5> Discussion Threads</h5> 
         <select id="query-size" onchange="getComments()">
             <option value = 1>1
             <option value = 5>5
             <option value = 10>10
         </select>
-        <ul id="comments-container">comments</ul>
+        <div id="comments-container">
+
+        </div>
+        <button onclick="deleteEntries()">Delete All Comments</button>
         <!-- <form action="/messages" method="POST"> -->
 
             <p>Enter a comment about my page!</p>

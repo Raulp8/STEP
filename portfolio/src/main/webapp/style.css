@@ -116,7 +116,29 @@ section.content {
 ul.cor {
     float: left;
 }
-
+div.thread {
+  margin-left: 10%;
+  margin-right: 20%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color:white;
+  border-radius: 15%;
+  height: fit-content;
+  box-shadow: -4px 6px gray;
+}
+div.origComment {
+  width: 50%;
+  margin-left: 10%;
+  margin-right: 20%;
+  margin-top: 20px;
+  background-color:yellow;
+  border-radius: 15%;
+  border-color: black;
+  box-shadow: blue;
+}
+#Threads {
+   background-color:#394e69;
+}
 hr {
     float: center;
     width : 60%;
