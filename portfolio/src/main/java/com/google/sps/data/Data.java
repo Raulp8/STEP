@@ -30,7 +30,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
-
+import com.google.appengine.api.datastore.Key;
 
 
 public class Data {
@@ -60,10 +60,14 @@ public class Data {
     
     }
 
+    public static void deleteKey(Key key) {
+        datastore.delete(key);
+    }
+
     public static void DeleteData (Query query) {
         PreparedQuery queryResults = datastore.prepare(query);
         for (Entity entry: queryResults.asIterable()) {
-            datastore.delete(entry.getKey());
+            deleteKey(entry.getKey());
         }
         
     }

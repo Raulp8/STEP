@@ -29,7 +29,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-
+import com.google.appengine.api.datastore.KeyFactory.Builder;
 
 
 @WebServlet("/delete-data")
@@ -43,9 +43,15 @@ public class DeleteServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
-      Data.DeleteData(query);
-      Data.DeleteData(query);
+      Query query = new Query("Comment");
+      String kind = request.getParameter("kind");
+      String id = request.getParameter("id");
+      if (kind != null & id != null) {
+          Data.deleteKey(new Builder(kind, Long.parseLong(id)).getKey());
+      }
+      else {
+          Data.DeleteData(query);
+      }
       System.out.println("delete done");
   }
 

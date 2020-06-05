@@ -83,7 +83,7 @@ function getComments() {
         commentListEle.innerHTML = '';
         var i;
         for(i = 0; i < comments.length; i++){
-            commentListEle.appendChild(createThreadElement(comments[i].propertyMap.value));
+            commentListEle.appendChild(createThreadElement(comments[i]));
         }
     });
 }
@@ -103,14 +103,17 @@ function getComments() {
  function deleteEntries () {
     var url = "/delete-data";
     fetch(url, {method: 'POST'}).then(response => {
-        console.log("delete done");
-    }).then(getComments(), getComments());
+        console.log(response);
+        getComments();
+    });
     // document.getElementById('comments-container').innerHTML = '';
 
 }
 
-function createThreadElement(text) {
+function createThreadElement(commentEntity) {
 
+  text = commentEntity.propertyMap.value
+  
   //Create Thread Wrapper
   var ThreadWrapper = document.createElement('div');
   ThreadWrapper.className = "thread";
@@ -121,7 +124,13 @@ function createThreadElement(text) {
   origComment.value = ThreadWrapper;
   origComment.className = "origComment";
   var textOrigComment = document.createElement('p');
+
+
+  dButton = deleteButton(commentEntity);
+
   origComment.appendChild(textOrigComment);
+  origComment.appendChild(dButton);
+
   textOrigComment.innerText = text;
 
   //Create Reply Section
@@ -131,6 +140,20 @@ function createThreadElement(text) {
   
   origComment.onclick = function () {reply(replySection)};
   return ThreadWrapper;
+}
+
+
+function deleteButton(commentEntity) {
+  var dButton = document.createElement('button');
+  dButton.className = "deleteComment";
+  dButton.onclick = function () {
+
+      $.post("/delete-data", commentEntity.key)
+      .then(response => getComments())
+
+  };
+  dButton.innerText = "delete comment";
+  return dButton; 
 }
 
 
