@@ -43,13 +43,13 @@ public class DeleteServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      Query query = new Query("Comment");
       String kind = request.getParameter("kind");
       String id = request.getParameter("id");
       if (kind != null & id != null) {
           Data.deleteKey(new Builder(kind, Long.parseLong(id)).getKey());
       }
       else {
+          Query query = new Query("Comment");
           Data.DeleteData(query);
       }
       System.out.println("delete done");

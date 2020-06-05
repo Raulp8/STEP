@@ -16,6 +16,7 @@ package com.google.sps.data;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,9 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 public class Data {
@@ -52,15 +56,27 @@ public class Data {
         return gson.toJson(queryResults);
     }
 
+    private static JsonObject newMessage(String input) {
+
+        JsonObject jsonRep = new JsonObject();
+        jsonRep.addProperty("text", input);
+        jsonRep.add("replies", new JsonArray());
+        return jsonRep;
+
+    }
+
     public static void addToData(String input) {
+        Gson gson = new Gson();
         Entity commentEntity = new Entity("Comment");
-        commentEntity.setProperty("value", input);
+        JsonObject jsonRep = newMessage(input);
+        commentEntity.setProperty("value", gson.toJson(jsonRep));
         commentEntity.setProperty("timestamp", System.currentTimeMillis());
         datastore.put(commentEntity); 
     
     }
 
     public static void deleteKey(Key key) {
+        System.out.println(key);
         datastore.delete(key);
     }
 
@@ -70,6 +86,37 @@ public class Data {
             deleteKey(entry.getKey());
         }
         
+    }
+
+    public static void reply(Key key, String reply, ArrayList<Integer> path) {
+        Gson gson = new Gson();
+        try {
+            // Entity entry = datastore.get(key);
+            // String objectString = (String) entry.getProperty("value");
+            // JsonObject thread = (JsonObject) gson.toJsonTree(objectString);
+            // thread.getAsJsonArray("replies").add(reply);
+            // System.out.println(thread);
+            System.out.println("hey");
+            Entity entry = datastore.get(key);
+            String objectString = (String) entry.getProperty("value");
+            JsonElement jsonElement = new JsonParser().parse(objectString);
+            JsonObject thread = jsonElement.getAsJsonObject();
+            JsonObject replyRep = newMessage(reply);
+            System.out.print("wow");
+            JsonArray replies = thread.getAsJsonArray("replies");
+            System.out.println(path);
+            for(int index: path) {
+                replies = replies.get(index).getAsJsonArray();
+                System.out.print(replies);
+            }
+            replies.add(replyRep);
+            entry.setProperty("value", gson.toJson(thread));
+            datastore.put(entry);
+
+        } catch(Exception EntityNotFoundException) {
+            System.out.println("not found");
+        }
+
     }
 
 

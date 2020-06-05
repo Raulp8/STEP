@@ -117,8 +117,13 @@ ul.cor {
     float: left;
 }
 div.thread {
-  margin-left: 10%;
-  margin-right: 20%;
+  
+  float: center;
+  width: 10cm;
+
+  margin-left: 30%;
+  
+
   margin-top: 30px;
   margin-bottom: 30px;
   background-color:white;

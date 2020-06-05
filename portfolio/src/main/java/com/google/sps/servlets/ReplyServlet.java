@@ -15,40 +15,52 @@
 package com.google.sps.servlets;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-
+import com.google.sps.data.Data;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.KeyFactory.Builder;
 
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
+@WebServlet("/reply")
+public class ReplyServlet extends HttpServlet {
 
     static Gson gson = new Gson();
-    ArrayList<String> messages = new ArrayList();
 
-    
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    messages.add("msg1");
-    messages.add("msg2");
-    messages.add("msg3");
-    response.setContentType("application/json;");
-    response.getWriter().println(gson.toJson(messages));
+
+    
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      String comment = request.getParameter("text-input");
-      System.out.print("comments: ");
-      System.out.println(comment);
+      String kind = request.getParameter("kind");
+      String id = request.getParameter("id");
+      String replyText = request.getParameter("reply-text");
+      ArrayList<Integer> path = gson.fromJson(request.getParameter("path"), ArrayList.class);
+      if (path == null) {
+          path = new ArrayList();
+      }
+      System.out.println(path);
+      if (kind != null && id != null && replyText  != null) {
+          Data.reply(new Builder(kind, Long.parseLong(id)).getKey(), replyText, path);
+      }
   }
 
 }

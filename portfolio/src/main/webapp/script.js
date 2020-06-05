@@ -111,8 +111,9 @@ function getComments() {
 }
 
 function createThreadElement(commentEntity) {
+  var commentJson = JSON.parse(commentEntity.propertyMap.value);
 
-  text = commentEntity.propertyMap.value
+  var text = commentJson.text;
   
   //Create Thread Wrapper
   var ThreadWrapper = document.createElement('div');
@@ -129,7 +130,7 @@ function createThreadElement(commentEntity) {
   dButton = deleteButton(commentEntity);
 
   origComment.appendChild(textOrigComment);
-  origComment.appendChild(dButton);
+  ThreadWrapper.appendChild(dButton);
 
   textOrigComment.innerText = text;
 
@@ -137,9 +138,40 @@ function createThreadElement(commentEntity) {
   var replySection = document.createElement('div');
   ThreadWrapper.appendChild(replySection);
   replySection.className = "replyWrapper";
+  replyhtml(replySection, commentEntity.key, commentJson.replies, []);
   
-  origComment.onclick = function () {reply(replySection)};
+  origComment.onclick = function () {reply(replySection, commentEntity.key, [])};
   return ThreadWrapper;
+}
+
+function replyhtml(parentElem, key, replies, path) {
+    var i = 0;
+    for(; i < replies.length; i++) {
+        //reply
+        var replyEntry = document.createElement('div');
+        parentElem.appendChild(replyEntry);
+        replyEntry.className = "reply-entry";
+        var replyText = document.createElement('p');
+        replyText.innerText = replies[i].text;
+        replyEntry.appendChild(replyText);
+
+        //replies to reply
+        var replySection = document.createElement('div');
+        parentElem.appendChild(replySection);
+        replySection.className = "replyWrapper";
+
+        //button to add new reply
+        var newPath = [...path];
+        newPath.push(i);
+        console.log(path);
+        console.log(newPath);
+        replyEntry.onclick = function () {
+            reply(replySection, key, newPath);
+        }
+
+        replyhtml(replySection, key, replies[i].replies, newPath);
+
+    }
 }
 
 
@@ -157,7 +189,7 @@ function deleteButton(commentEntity) {
 }
 
 
-function reply(ParentEle) {
+function reply(ParentEle, key, path) {
     //delete other reply div areas
     var replyForms = document.getElementsByClassName("reply");
     if (replyForms != undefined) {
@@ -170,12 +202,19 @@ function reply(ParentEle) {
     var replydiv = document.createElement('div');
     replydiv.className = "reply";
     var textArea = document.createElement('textarea');
+    textArea.innerText = "reply";
     var submitReply = document.createElement('button');
     submitReply.innerHTML = "submit Reply";
 
-    // submitReply.onclick = function () {
 
-    // }
+    submitReply.onclick = function () {
+        key["reply-text"] = textArea.value;
+        key["path"] = path;
+        console.log(key);
+        $.post("/reply", key)
+            .then(response => getComments());
+
+    };
 
     replydiv.appendChild(submitReply);
     replydiv.appendChild(textArea);
