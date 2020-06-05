@@ -83,7 +83,7 @@ function getComments() {
         commentListEle.innerHTML = '';
         var i;
         for(i = 0; i < comments.length; i++){
-            commentListEle.appendChild(createThreadElement(comments[i]));
+            commentListEle.appendChild(createThreadElement(comments[i].propertyMap.value));
         }
     });
 }
@@ -104,8 +104,8 @@ function getComments() {
     var url = "/delete-data";
     fetch(url, {method: 'POST'}).then(response => {
         console.log("delete done");
-    });
-    document.getElementById('comments-container').innerHTML = '';
+    }).then(getComments(), getComments());
+    // document.getElementById('comments-container').innerHTML = '';
 
 }
 
@@ -118,10 +118,43 @@ function createThreadElement(text) {
   //Create Original Comment wrapper
   var origComment = document.createElement('div');
   ThreadWrapper.appendChild(origComment);
+  origComment.value = ThreadWrapper;
   origComment.className = "origComment";
   var textOrigComment = document.createElement('p');
   origComment.appendChild(textOrigComment);
   textOrigComment.innerText = text;
 
+  //Create Reply Section
+  var replySection = document.createElement('div');
+  ThreadWrapper.appendChild(replySection);
+  replySection.className = "replyWrapper";
+  
+  origComment.onclick = function () {reply(replySection)};
   return ThreadWrapper;
+}
+
+
+function reply(ParentEle) {
+    //delete other reply div areas
+    var replyForms = document.getElementsByClassName("reply");
+    if (replyForms != undefined) {
+        var i = 0;
+        for (; i < replyForms.length; i++) {
+            replyForms[i].parentElement.removeChild(replyForms[i]);
+        }
+    }
+    //create reply div
+    var replydiv = document.createElement('div');
+    replydiv.className = "reply";
+    var textArea = document.createElement('textarea');
+    var submitReply = document.createElement('button');
+    submitReply.innerHTML = "submit Reply";
+
+    // submitReply.onclick = function () {
+
+    // }
+
+    replydiv.appendChild(submitReply);
+    replydiv.appendChild(textArea);
+    ParentEle.appendChild(replydiv);
 }

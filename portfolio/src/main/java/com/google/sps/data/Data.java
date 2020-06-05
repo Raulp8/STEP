@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
-
+import com.google.appengine.api.datastore.FetchOptions;
 
 
 
@@ -37,29 +38,21 @@ public class Data {
     
     String text;
 
+    static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
     public Data(String text) {
         this.text = text;
     }
 
-    public static JsonArray fetchComments(Query query, int numComments) {
+    public static String fetchComments(Query query, int numComments) {
 
-        JsonArray fetchedResults = new JsonArray();
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        PreparedQuery queryResults = datastore.prepare(query);
-        for (Entity entry : queryResults.asIterable()) {
-            if (numComments <= 0) {
-                break;
-            }
-            String comment = (String) entry.getProperty("value");
-            fetchedResults.add(comment);
-            System.out.println(fetchedResults);
-            numComments--;
-        }
-        return fetchedResults;
+        Gson gson = new Gson();
+        List<Entity> queryResults = datastore.
+                prepare(query).asList(FetchOptions.Builder.withLimit(numComments));;
+        return gson.toJson(queryResults);
     }
 
     public static void addToData(String input) {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Entity commentEntity = new Entity("Comment");
         commentEntity.setProperty("value", input);
         commentEntity.setProperty("timestamp", System.currentTimeMillis());
@@ -68,7 +61,6 @@ public class Data {
     }
 
     public static void DeleteData (Query query) {
-         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery queryResults = datastore.prepare(query);
         for (Entity entry: queryResults.asIterable()) {
             datastore.delete(entry.getKey());

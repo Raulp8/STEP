@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 
 
 
@@ -44,8 +46,8 @@ public class MessageServlet extends HttpServlet {
     
     int querySize = Integer.parseInt(request.getParameter("query-size"));
     Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
-    JsonArray queryResults = Data.fetchComments(query, querySize);
-
+    Data.fetchComments(query, querySize);
+    String queryResults =  Data.fetchComments(query,querySize);
     response.setContentType("application/json;");
     response.getWriter().println(queryResults);
     System.out.println(queryResults);
