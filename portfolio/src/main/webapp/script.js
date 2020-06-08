@@ -59,3 +59,168 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
+/**
+ * Fetches a random quote from the server and adds it to the DOM.
+ */
+function getSmessage() {
+  fetch('/data').then(response => response.json()).then((quote) => {
+    document.getElementById('scon').innerText = quote;
+  });
+}
+
+function getComments() {
+    var querySize = document.getElementById("query-size").value;
+    console.log(querySize);
+    if (querySize == undefined) {
+        querySize = 10;
+    }
+    console.log("get comments called");
+    var url = '/messages?query-size='.concat(querySize.toString(10));
+    fetch(url, {method: 'GET'}).then(response => response.json()).then((comments) => {
+        console.log("received comments: ");
+        console.log(comments);
+        const commentListEle = document.getElementById('comments-container');
+        commentListEle.innerHTML = '';
+        var i;
+        for(i = 0; i < comments.length; i++){
+            commentListEle.appendChild(createThreadElement(comments[i]));
+        }
+    });
+}
+
+ function addComment () {
+    var comment = document.getElementById("text-input").value;
+    var url = "/messages?text-input=".concat(comment);
+    console.log('adding comment:\n' + comment);
+     fetch(url, {
+        method: 'POST',
+         headers: {
+          'Content-Type': 'application/json'
+        },
+        }).then(response => getComments());
+}
+
+ function deleteEntries () {
+    var url = "/delete-data";
+    fetch(url, {method: 'POST'}).then(response => {
+        console.log(response);
+        getComments();
+    });
+    // document.getElementById('comments-container').innerHTML = '';
+
+}
+
+function createThreadElement(commentEntity) {
+  var commentJson = JSON.parse(commentEntity.propertyMap.value);
+
+  var text = commentJson.text;
+  
+  //Create Thread Wrapper
+  var ThreadWrapper = document.createElement('div');
+  ThreadWrapper.className = "thread";
+
+  //Create Original Comment wrapper
+  var origComment = document.createElement('div');
+  ThreadWrapper.appendChild(origComment);
+  origComment.value = ThreadWrapper;
+  origComment.className = "origComment";
+  var textOrigComment = document.createElement('p');
+
+
+  dButton = deleteButton(commentEntity);
+
+  origComment.appendChild(textOrigComment);
+  ThreadWrapper.appendChild(dButton);
+
+  textOrigComment.innerText = text;
+
+  //Create Reply Section
+  var replySection = document.createElement('div');
+  ThreadWrapper.appendChild(replySection);
+  replySection.className = "replyWrapper";
+  replyhtml(replySection, commentEntity.key, commentJson.replies, "");
+  
+  origComment.onclick = function () {reply(replySection, commentEntity.key, "")};
+  return ThreadWrapper;
+}
+
+function replyhtml(parentElem, key, replies, path) {
+    var i = 0;
+    //vertical line
+    var vertLine = document.createElement('div');
+    vertLine.className = "vert-line";
+    parentElem.appendChild(vertLine);
+
+    for(; i < replies.length; i++) {
+        //reply
+        var replyEntry = document.createElement('div');
+        parentElem.appendChild(replyEntry);
+        replyEntry.className = "reply-entry";
+        var replyText = document.createElement('p');
+        replyEntry.appendChild(replyText);
+        replyText.innerText = replies[i].text;
+
+        //replies to reply
+        const replySection = document.createElement('div');
+        parentElem.appendChild(replySection);
+        replySection.className = "replyWrapper";
+
+        //button to add new reply
+        const newPath = path + i.toString();
+
+
+        replyText.onclick = function () {
+            reply(replySection, key, newPath);
+        }
+
+        replyhtml(replySection, key, replies[i].replies, newPath);
+
+    }
+}
+
+
+function deleteButton(commentEntity) {
+  var dButton = document.createElement('button');
+  dButton.className = "deleteComment";
+  dButton.onclick = function () {
+
+      $.post("/delete-data", commentEntity.key)
+      .then(response => getComments())
+
+  };
+  dButton.innerText = "delete thread";
+  return dButton; 
+}
+
+
+function reply(ParentEle, key, path) {
+    //delete other reply div areas
+    var replyForms = document.getElementsByClassName("reply");
+    if (replyForms != undefined) {
+        var i = 0;
+        for (; i < replyForms.length; i++) {
+            replyForms[i].parentElement.removeChild(replyForms[i]);
+        }
+    }
+    //create reply div
+    var replydiv = document.createElement('div');
+    replydiv.className = "reply";
+    var textArea = document.createElement('textarea');
+    textArea.innerText = "reply";
+    var submitReply = document.createElement('button');
+    submitReply.innerHTML = "submit Reply";
+
+
+    submitReply.onclick = function () {
+        key["reply-text"] = textArea.value;
+        key["path"] = path;
+        console.log(key);
+        $.post("/reply", key)
+            .then(response => getComments());
+
+    };
+
+    replydiv.appendChild(submitReply);
+    replydiv.appendChild(textArea);
+    ParentEle.appendChild(replydiv);
+}

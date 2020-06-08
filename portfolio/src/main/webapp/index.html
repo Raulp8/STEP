@@ -9,8 +9,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="script.js"></script>
   </head>
-  <body>
-     <!-- Foreground Header (Name)  -->
+  <body onload="getComments()">
+
     <section id = "home" class ="Fheader">
         <h1> Raul Ricardo Palomo </h1>
     </section>
@@ -174,7 +174,29 @@
       <button onclick="addRandomGreeting()">&#127861</button>
       <div id="greeting-container"></div>
 
+      </div>
+      </section>
+      <section id = "Threads" class = "content">
+        <h5> Discussion Threads</h5> 
+        <select id="query-size" onchange="getComments()">
+            <option value = 5>5
+            <option value = 10>10
+            <option value = 25>25
+            <option value = 50>50
+        </select>
+        <div id="comments-container">
+
         </div>
+        <button onclick="deleteEntries()">Delete All Threads</button>
+
+            <h5>Start a Thread!</h5>
+            <textarea id="text-input">Thread</textarea>
+            <br/><br/>
+            <br/><br/>
+
+            <button onclick="addComment()">Add Thread</button>
+        <!-- </form> -->
+
         <br><br>
     </section>
    
