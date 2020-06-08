@@ -146,25 +146,30 @@ function createThreadElement(commentEntity) {
 
 function replyhtml(parentElem, key, replies, path) {
     var i = 0;
+    //vertical line
+    var vertLine = document.createElement('div');
+    vertLine.className = "vert-line";
+    parentElem.appendChild(vertLine);
+
     for(; i < replies.length; i++) {
         //reply
         var replyEntry = document.createElement('div');
         parentElem.appendChild(replyEntry);
         replyEntry.className = "reply-entry";
         var replyText = document.createElement('p');
-        replyText.innerText = replies[i].text;
         replyEntry.appendChild(replyText);
+        replyText.innerText = replies[i].text;
 
         //replies to reply
-        var replySection = document.createElement('div');
+        const replySection = document.createElement('div');
         parentElem.appendChild(replySection);
         replySection.className = "replyWrapper";
 
         //button to add new reply
-        var newPath = path + i.toString();
-        console.log(path);
-        console.log(newPath);
-        replyEntry.onclick = function () {
+        const newPath = path + i.toString();
+
+
+        replyText.onclick = function () {
             reply(replySection, key, newPath);
         }
 
@@ -183,7 +188,7 @@ function deleteButton(commentEntity) {
       .then(response => getComments())
 
   };
-  dButton.innerText = "delete comment";
+  dButton.innerText = "delete thread";
   return dButton; 
 }
 

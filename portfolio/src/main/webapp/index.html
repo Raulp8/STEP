@@ -10,7 +10,7 @@
     <script src="script.js"></script>
   </head>
   <body onload="getComments()">
-     <!-- Foreground Header (Name)  -->
+
     <section id = "home" class ="Fheader">
         <h1> Raul Ricardo Palomo </h1>
     </section>
@@ -179,22 +179,22 @@
       <section id = "Threads" class = "content">
         <h5> Discussion Threads</h5> 
         <select id="query-size" onchange="getComments()">
-            <option value = 1>1
             <option value = 5>5
             <option value = 10>10
+            <option value = 25>25
+            <option value = 50>50
         </select>
         <div id="comments-container">
 
         </div>
-        <button onclick="deleteEntries()">Delete All Comments</button>
-        <!-- <form action="/messages" method="POST"> -->
+        <button onclick="deleteEntries()">Delete All Threads</button>
 
-            <p>Enter a comment about my page!</p>
-            <textarea id="text-input">one, two, three</textarea>
+            <h5>Start a Thread!</h5>
+            <textarea id="text-input">Thread</textarea>
             <br/><br/>
             <br/><br/>
 
-            <button onclick="addComment()">Add Comment</button>
+            <button onclick="addComment()">Add Thread</button>
         <!-- </form> -->
 
         <br><br>

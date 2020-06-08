@@ -116,20 +116,27 @@ section.content {
 ul.cor {
     float: left;
 }
+
+button.deleteComment {
+  float: top;
+  border-radius: 50%;
+  background-color: aliceblue;
+  color: #4a74bb;
+  border-color: #b4cce7;
+  height:;
+}
+
 div.thread {
-  
   float: center;
-  width: 10cm;
-
+  width: 13cm;
   margin-left: 30%;
-  
-
   margin-top: 30px;
   margin-bottom: 30px;
   background-color:white;
   border-radius: 15%;
   height: fit-content;
   box-shadow: -4px 6px gray;
+  padding-bottom: 10px;
 }
 div.origComment {
   width: 50%;
@@ -141,6 +148,24 @@ div.origComment {
   border-color: black;
   box-shadow: blue;
 }
+
+div.replyWrapper {
+  margin-left: 20px;
+  height: fit-content;
+  padding-left: 5px;
+  border-left: 4px solid #b8c2d6;
+}
+
+div.vert-line {
+  border-left: 6px solid green;
+  left:0;
+  heig
+  margin-right: 0px;
+  width: 1px;
+  /* left: 0; */
+  border-right: 1px;
+}
+
 #Threads {
    background-color:#394e69;
 }
