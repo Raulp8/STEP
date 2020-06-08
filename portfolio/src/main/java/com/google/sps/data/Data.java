@@ -88,7 +88,7 @@ public class Data {
         
     }
 
-    public static void reply(Key key, String reply, ArrayList<Integer> path) {
+    public static void reply(Key key, String reply, String path) {
         Gson gson = new Gson();
         try {
             // Entity entry = datastore.get(key);
@@ -96,20 +96,18 @@ public class Data {
             // JsonObject thread = (JsonObject) gson.toJsonTree(objectString);
             // thread.getAsJsonArray("replies").add(reply);
             // System.out.println(thread);
-            System.out.println("hey");
             Entity entry = datastore.get(key);
             String objectString = (String) entry.getProperty("value");
             JsonElement jsonElement = new JsonParser().parse(objectString);
-            JsonObject thread = jsonElement.getAsJsonObject();
+            JsonObject thread = gson.toJsonTree(jsonElement).getAsJsonObject();
             JsonObject replyRep = newMessage(reply);
-            System.out.print("wow");
             JsonArray replies = thread.getAsJsonArray("replies");
-            System.out.println(path);
-            for(int index: path) {
-                replies = replies.get(index).getAsJsonArray();
-                System.out.print(replies);
+            JsonArray pnt = replies;
+            for(int i = 0; i < path.length(); i++) {
+                int index = Character.getNumericValue(path.charAt(i));
+                pnt = (JsonArray) pnt.get(index).getAsJsonObject().getAsJsonArray("replies");
             }
-            replies.add(replyRep);
+            pnt.add((JsonElement) replyRep);
             entry.setProperty("value", gson.toJson(thread));
             datastore.put(entry);
 

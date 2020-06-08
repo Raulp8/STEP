@@ -53,9 +53,9 @@ public class ReplyServlet extends HttpServlet {
       String kind = request.getParameter("kind");
       String id = request.getParameter("id");
       String replyText = request.getParameter("reply-text");
-      ArrayList<Integer> path = gson.fromJson(request.getParameter("path"), ArrayList.class);
+      String path = request.getParameter("path");
       if (path == null) {
-          path = new ArrayList();
+          path = "";
       }
       System.out.println(path);
       if (kind != null && id != null && replyText  != null) {

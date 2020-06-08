@@ -138,9 +138,9 @@ function createThreadElement(commentEntity) {
   var replySection = document.createElement('div');
   ThreadWrapper.appendChild(replySection);
   replySection.className = "replyWrapper";
-  replyhtml(replySection, commentEntity.key, commentJson.replies, []);
+  replyhtml(replySection, commentEntity.key, commentJson.replies, "");
   
-  origComment.onclick = function () {reply(replySection, commentEntity.key, [])};
+  origComment.onclick = function () {reply(replySection, commentEntity.key, "")};
   return ThreadWrapper;
 }
 
@@ -161,8 +161,7 @@ function replyhtml(parentElem, key, replies, path) {
         replySection.className = "replyWrapper";
 
         //button to add new reply
-        var newPath = [...path];
-        newPath.push(i);
+        var newPath = path + i.toString();
         console.log(path);
         console.log(newPath);
         replyEntry.onclick = function () {
