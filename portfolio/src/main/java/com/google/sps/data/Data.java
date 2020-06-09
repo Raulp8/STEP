@@ -74,11 +74,12 @@ public class Data {
     /*
      * Creates new Thread and aadss to datastore
      */
-    public static void addToData(String input) {
+    public static void addToData(String input, String imageUrl) {
         Gson gson = new Gson();
         Entity commentEntity = new Entity("Comment");
         JsonObject jsonRep = newMessage(input);
         commentEntity.setProperty("value", gson.toJson(jsonRep));
+        commentEntity.setProperty("imageUrl", imageUrl);
         commentEntity.setProperty("timestamp", System.currentTimeMillis());
         datastore.put(commentEntity); 
     

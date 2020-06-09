@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-let i = 0;
+var uploadUrl;
 
 $(document).ready(function(){
   // Add smooth scrolling to all links
@@ -38,6 +38,16 @@ $(document).ready(function(){
       });
     } 
   });
+  fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        uploadUrl = imageUploadUrl;
+          console.log(uploadUrl);
+      });
+
+
 });
 
 
@@ -70,12 +80,13 @@ function getSmessage() {
 
 function getComments() {
     var querySize = document.getElementById("query-size").value;
-    console.log(querySize);
+    console.log(uploadUrl);
     if (querySize == undefined) {
         querySize = 10;
     }
     console.log("get comments called");
     var url = '/messages?query-size='.concat(querySize.toString(10));
+    
     fetch(url, {method: 'GET'}).then(response => response.json()).then((comments) => {
         console.log("received comments: ");
         console.log(comments);
@@ -88,16 +99,22 @@ function getComments() {
     });
 }
 
- function addComment () {
+ async function addComment () {
     var comment = document.getElementById("text-input").value;
+    var img = document.getElementById("fileInput").files[0];
+    console.log(img);
     var url = "/messages?text-input=".concat(comment);
-    console.log('adding comment:\n' + comment);
-     fetch(url, {
-        method: 'POST',
-         headers: {
-          'Content-Type': 'application/json'
-        },
-        }).then(response => getComments());
+    console.log('sending message to \n' + uploadUrl);
+
+    var fData  = new FormData();
+    fData.append('text', comment);
+    fData.append('image', img);
+    console.log(fData);
+    fetch(uploadUrl, {
+    method: 'POST',
+    body: fData
+    }).then(response => getComments());
+
 }
 
  function deleteEntries () {
@@ -112,6 +129,8 @@ function getComments() {
 
 function createThreadElement(commentEntity) {
   var commentJson = JSON.parse(commentEntity.propertyMap.value);
+  var imgUrl = commentEntity.propertyMap.imageUrl;
+
 
   var text = commentJson.text;
   
@@ -121,11 +140,19 @@ function createThreadElement(commentEntity) {
 
   //Create Original Comment wrapper
   var origComment = document.createElement('div');
-  ThreadWrapper.appendChild(origComment);
   origComment.value = ThreadWrapper;
   origComment.className = "origComment";
   var textOrigComment = document.createElement('p');
+  var pic = document.createElement('img');
 
+  //image
+  if (imgUrl != undefined) {
+    pic.src = imgUrl;
+    pic.className = "threadPic";
+    ThreadWrapper.appendChild(pic);
+  }
+
+  ThreadWrapper.appendChild(origComment);
 
   dButton = deleteButton(commentEntity);
 
