@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-var uploadUrl;
 
 $(document).ready(function(){
   // Add smooth scrolling to all links
@@ -38,15 +37,6 @@ $(document).ready(function(){
       });
     } 
   });
-  fetch('/blobstore-upload-url')
-      .then((response) => {
-        return response.text();
-      })
-      .then((imageUploadUrl) => {
-        uploadUrl = imageUploadUrl;
-          console.log(uploadUrl);
-      });
-
 
 });
 
@@ -80,7 +70,6 @@ function getSmessage() {
 
 function getComments() {
     var querySize = document.getElementById("query-size").value;
-    console.log(uploadUrl);
     if (querySize == undefined) {
         querySize = 10;
     }
@@ -99,21 +88,27 @@ function getComments() {
     });
 }
 
- async function addComment () {
+ function addComment () {
     var comment = document.getElementById("text-input").value;
     var img = document.getElementById("fileInput").files[0];
     console.log(img);
     var url = "/messages?text-input=".concat(comment);
-    console.log('sending message to \n' + uploadUrl);
 
     var fData  = new FormData();
     fData.append('text', comment);
     fData.append('image', img);
     console.log(fData);
-    fetch(uploadUrl, {
-    method: 'POST',
-    body: fData
-    }).then(response => getComments());
+    fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+          fetch(imageUploadUrl, {
+            method: 'POST',
+            body: fData
+            })
+            .then(response => getComments());
+      });
 
 }
 

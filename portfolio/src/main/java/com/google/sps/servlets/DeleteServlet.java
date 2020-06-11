@@ -52,7 +52,6 @@ public class DeleteServlet extends HttpServlet {
           Query query = new Query("Comment");
           Data.DeleteData(query);
       }
-      System.out.println("delete done");
   }
 
 }

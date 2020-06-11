@@ -46,7 +46,6 @@ public class FormHandlerServlet extends HttpServlet {
 
     // Get the message entered by the user.
     String message = request.getParameter("message");
-
     // Get the URL of the image that the user uploaded to Blobstore.
     String imageUrl = getUploadedFileUrl(request, "image");
 

@@ -32,6 +32,9 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -43,7 +46,9 @@ public class Data {
     String text;
 
     static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
+    static BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    
+    
     public Data(String text) {
         this.text = text;
     }
@@ -74,12 +79,13 @@ public class Data {
     /*
      * Creates new Thread and aadss to datastore
      */
-    public static void addToData(String input, String imageUrl) {
+    public static void addToData(String input, String imageUrl, BlobKey bKey) {
         Gson gson = new Gson();
         Entity commentEntity = new Entity("Comment");
         JsonObject jsonRep = newMessage(input);
         commentEntity.setProperty("value", gson.toJson(jsonRep));
         commentEntity.setProperty("imageUrl", imageUrl);
+        commentEntity.setProperty("blobKey", gson.toJson(bKey));
         commentEntity.setProperty("timestamp", System.currentTimeMillis());
         datastore.put(commentEntity); 
     
@@ -89,8 +95,15 @@ public class Data {
      * Deletes Thread
      */
     public static void deleteKey(Key key) {
-        System.out.println(key);
+        Gson gson = new Gson();
+        try {
+        Entity entity = datastore.get(key);
+        BlobKey bKey = gson.fromJson((String) entity.getProperty("blobKey"), BlobKey.class);
         datastore.delete(key);
+        blobstoreService.delete(bKey);
+        } catch(Exception EntityNotFoundException) {
+            System.out.println(key.toString() + " null property");
+        }
     }
 
     /*

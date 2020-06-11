@@ -71,11 +71,14 @@ public class MessageServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String comment = request.getParameter("text");
       String imageUrl = getUploadedFileUrl(request, "image");
-      System.out.println("printing request");
-      System.out.println(request.getParameterMap());
-      System.out.println(request.getParameter("image"));
+      BlobKey bKey = null;
+      if (imageUrl != null) {
+          BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+          bKey = blobstoreService.getUploads(request).get("image").get(0);
+          System.out.println(bKey);
+      }
       if (!comment.equals("")) {
-        Data.addToData(comment, imageUrl);
+        Data.addToData(comment, imageUrl, bKey);
       }
     //   response.sendRedirect("/");
   }
@@ -84,7 +87,6 @@ public class MessageServlet extends HttpServlet {
  private String getUploadedFileUrl(HttpServletRequest request, String formInputElementName) {
     BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
     Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-    System.out.println(blobs);
     List<BlobKey> blobKeys = blobs.get("image");
 
     // User submitted form without selecting a file, so we can't get a URL. (dev server)
