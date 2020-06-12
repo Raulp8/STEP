@@ -85,6 +85,7 @@ function getComments() {
         for(i = 0; i < comments.length; i++){
             commentListEle.appendChild(createThreadElement(comments[i]));
         }
+
     });
 }
 
@@ -128,6 +129,10 @@ function createThreadElement(commentEntity) {
 
 
   var text = commentJson.text;
+
+  //Likes
+  const likesDisplay = document.createElement('div');
+  likesDisplay.innerText = commentEntity.propertyMap.like;
   
   //Create Thread Wrapper
   var ThreadWrapper = document.createElement('div');
@@ -147,13 +152,13 @@ function createThreadElement(commentEntity) {
     ThreadWrapper.appendChild(pic);
   }
 
+  ThreadWrapper.appendChild(deleteButton(commentEntity));
   ThreadWrapper.appendChild(origComment);
 
-  dButton = deleteButton(commentEntity);
 
   origComment.appendChild(textOrigComment);
-  ThreadWrapper.appendChild(dButton);
-
+  origComment.appendChild(likesDisplay);
+  
   textOrigComment.innerText = text;
 
   //Create Reply Section
@@ -163,6 +168,9 @@ function createThreadElement(commentEntity) {
   replyhtml(replySection, commentEntity.key, commentJson.replies, "");
   
   origComment.onclick = function () {reply(replySection, commentEntity.key, "")};
+
+
+  //like section
   return ThreadWrapper;
 }
 
@@ -200,18 +208,34 @@ function replyhtml(parentElem, key, replies, path) {
     }
 }
 
+function like(commentEntity) {
+  const likeWrapper = document.createElement('div');
+  likeWrapper.className = "likes";
+  const thumbsUp = document.createElement('i');
+  thumbsUp.className = "fas fa-thumbs-up";
+  thumbsUp.onclick = function () {
+      $.post("/like", commentEntity.key)
+      .then(response => getComments())
+  };
+  likeWrapper.appendChild(trashIcon);
+  return likeWrapper; 
+}
+
 
 function deleteButton(commentEntity) {
-  var dButton = document.createElement('button');
-  dButton.className = "deleteComment";
-  dButton.onclick = function () {
+  const trashWrapper = document.createElement('div');
+  trashWrapper.className = "trashCan";
+  const trashIcon = document.createElement('i');
+  trashIcon.className = "fa fa-trash";
+  trashIcon.setAttribute('aria-hidden', 'true');
+  trashWrapper.onclick = function () {
 
       $.post("/delete-data", commentEntity.key)
       .then(response => getComments())
 
   };
-  dButton.innerText = "delete thread";
-  return dButton; 
+  trashWrapper.appendChild(trashIcon);
+  return trashWrapper; 
 }
 
 

@@ -60,10 +60,10 @@ public class MessageServlet extends HttpServlet {
     int querySize = Integer.parseInt(request.getParameter("query-size"));
     Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
     Data.fetchComments(query, querySize);
-    String queryResults =  Data.fetchComments(query,querySize);
+    List<Entity> queryResults =  Data.fetchComments(query,querySize);
     response.setContentType("application/json;");
-    response.getWriter().println(queryResults);
-    System.out.println(queryResults);
+    response.getWriter().println(gson.toJson(queryResults));
+    Data.updateViews(queryResults);
     
   }
 

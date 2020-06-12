@@ -56,11 +56,10 @@ public class Data {
     /*
      * Fetches all comments in datastore
      */
-    public static String fetchComments(Query query, int numComments) {
-        Gson gson = new Gson();
+    public static List<Entity> fetchComments(Query query, int numComments) {
         List<Entity> queryResults = datastore.
                 prepare(query).asList(FetchOptions.Builder.withLimit(numComments));;
-        return gson.toJson(queryResults);
+        return queryResults;
     }
 
 
@@ -77,7 +76,7 @@ public class Data {
     }
 
     /*
-     * Creates new Thread and aadss to datastore
+     * Creates new Thread and adds to datastore
      */
     public static void addToData(String input, String imageUrl, BlobKey bKey) {
         Gson gson = new Gson();
@@ -87,8 +86,17 @@ public class Data {
         commentEntity.setProperty("imageUrl", imageUrl);
         commentEntity.setProperty("blobKey", gson.toJson(bKey));
         commentEntity.setProperty("timestamp", System.currentTimeMillis());
+        commentEntity.setProperty("like", 0);
+        commentEntity.setProperty("views", 0);
         datastore.put(commentEntity); 
     
+    }
+
+    public static void updateViews(List<Entity> commentEntities) {
+        for (Entity commentEntity: commentEntities) {
+            commentEntity.setProperty("views", ((long)commentEntity.getProperty("views")) + 1);
+            datastore.put(commentEntity);
+        }
     }
 
     /*
