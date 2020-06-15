@@ -23,6 +23,11 @@ h1{
   text-shadow: -2px 0  black;
 
 }
+img.threadPic {
+    width: 33%;
+    margin-left: 30%;
+    
+}
 section.Fheader {
     float: top;
     background-color: rgb(193, 208, 231);

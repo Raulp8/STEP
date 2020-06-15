@@ -57,7 +57,6 @@ public class ReplyServlet extends HttpServlet {
       if (path == null) {
           path = "";
       }
-      System.out.println(path);
       if (kind != null && id != null && replyText  != null) {
           Data.reply(new Builder(kind, Long.parseLong(id)).getKey(), replyText, path);
       }
