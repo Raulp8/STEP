@@ -131,8 +131,6 @@ function createThreadElement(commentEntity) {
   var text = commentJson.text;
 
   //Likes
-  const likesDisplay = document.createElement('div');
-  likesDisplay.innerText = commentEntity.propertyMap.like;
   
   //Create Thread Wrapper
   var ThreadWrapper = document.createElement('div');
@@ -157,7 +155,6 @@ function createThreadElement(commentEntity) {
 
 
   origComment.appendChild(textOrigComment);
-  origComment.appendChild(likesDisplay);
   
   textOrigComment.innerText = text;
 
@@ -171,6 +168,7 @@ function createThreadElement(commentEntity) {
 
 
   //like section
+  ThreadWrapper.appendChild(like(commentEntity));
   return ThreadWrapper;
 }
 
@@ -210,21 +208,26 @@ function replyhtml(parentElem, key, replies, path) {
 
 function like(commentEntity) {
   const likeWrapper = document.createElement('div');
-  likeWrapper.className = "likes";
+  const thumbsWrapper = document.createElement('div');
   const thumbsUp = document.createElement('i');
   thumbsUp.className = "fas fa-thumbs-up";
-  thumbsUp.onclick = function () {
+  thumbsWrapper.className = "commentButton";
+  thumbsWrapper.onclick = function () {
       $.post("/like", commentEntity.key)
       .then(response => getComments())
   };
-  likeWrapper.appendChild(trashIcon);
+  thumbsWrapper.appendChild(thumbsUp);
+  likeWrapper.appendChild(thumbsWrapper);
+  const numLikes = document.createElement('div');
+  numLikes.innerText = commentEntity.propertyMap.like;
+  likeWrapper.appendChild(numLikes);
   return likeWrapper; 
 }
 
 
 function deleteButton(commentEntity) {
   const trashWrapper = document.createElement('div');
-  trashWrapper.className = "trashCan";
+  trashWrapper.className = "commentButton";
   const trashIcon = document.createElement('i');
   trashIcon.className = "fa fa-trash";
   trashIcon.setAttribute('aria-hidden', 'true');

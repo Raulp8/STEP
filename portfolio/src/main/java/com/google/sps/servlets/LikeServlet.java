@@ -50,11 +50,11 @@ public class LikeServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //   String kind = request.getParameter("kind");
-    //   String id = request.getParameter("id");
-    //   if (kind != null && id != null && replyText  != null) {
-    //       Data.reply(new Builder(kind, Long.parseLong(id)).getKey(), replyText, path);
-    //   }
+      String kind = request.getParameter("kind");
+      String id = request.getParameter("id");
+      if (kind != null && id != null) {
+          Data.like(new Builder(kind, Long.parseLong(id)).getKey());
+      }
   }
 
 }

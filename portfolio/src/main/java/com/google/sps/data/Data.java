@@ -146,9 +146,20 @@ public class Data {
             datastore.put(entry);
 
         } catch(Exception EntityNotFoundException) {
-            System.out.println("not found");
+            System.out.println(key.toString() + "not found");
         }
 
+    }
+
+
+    public static void like (Key key) {
+        try {
+            Entity entry = datastore.get(key);
+            entry.setProperty("like", (long) (entry.getProperty("like")) + 1);
+            datastore.put(entry);
+        } catch (Exception EntityNotFoundException) {
+            System.out.println(key.toString() +  " not found");
+        }
     }
 
 
