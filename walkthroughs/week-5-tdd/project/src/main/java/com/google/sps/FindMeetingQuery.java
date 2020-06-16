@@ -15,9 +15,52 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.ArrayList;
+import com.google.sps.TimeRange.*;
+import com.google.sps.Event.*;
 
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    throw new UnsupportedOperationException("TODO: Implement this method.");
+
+      ArrayList<TimeRange> mtIntervals = new ArrayList();
+      //Remove events with irrelevant people
+      ArrayList<Event> eventsList = new ArrayList(events);
+      eventsList.removeIf((Event event) -> {
+          for (String attendee: request.getAttendees()) {
+              if (event.getAttendees().contains(attendee)) {
+                  //keep, atleast one relevant person
+                  return false;
+              }
+          }
+          //remove, no relevant people
+          return true;
+      });
+      eventsList.sort(Event.ORDER_BY_START);
+
+      //Keep Track of Latest Endpoint
+      int latestEnd = TimeRange.START_OF_DAY;
+      if (eventsList.size() > 0) {
+          Event first = eventsList.get(0);
+          if (request.getDuration() < first.getWhen().start()) {
+              mtIntervals.add(TimeRange.fromStartEnd(latestEnd, first.getWhen().start(), false));
+          }
+          latestEnd = eventsList.get(0).getWhen().end();
+      }
+      for(int i = 1; i < eventsList.size(); i++) {
+          Event currEvent = eventsList.get(i);
+          int startCurr = currEvent.getWhen().start();
+          if (startCurr - latestEnd >= request.getDuration()) {
+              mtIntervals.add(TimeRange.fromStartEnd(latestEnd, startCurr, false));
+          }
+          if(currEvent.getWhen().end() > latestEnd) {
+              latestEnd = currEvent.getWhen().end();
+          }
+      }
+      //End of day
+      if (request.getDuration() < TimeRange.END_OF_DAY - latestEnd) {
+          mtIntervals.add(TimeRange.fromStartEnd(latestEnd, TimeRange.END_OF_DAY, true));
+      }
+      return mtIntervals;
   }
+
 }

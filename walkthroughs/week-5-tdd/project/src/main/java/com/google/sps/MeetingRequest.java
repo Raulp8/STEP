@@ -28,9 +28,9 @@ public final class MeetingRequest {
   private final Collection<String> optional_attendees = new HashSet<>();
 
   // The duration of the meeting in minutes.
-  private final long duration;
+  private final int duration;
 
-  public MeetingRequest(Collection<String> attendees, long duration) {
+  public MeetingRequest(Collection<String> attendees, int duration) {
     this.duration = duration;
     this.attendees.addAll(attendees);
   }
@@ -61,7 +61,7 @@ public final class MeetingRequest {
   /**
    * Returns the duration of the meeting in minutes.
    */
-  public long getDuration() {
+  public int getDuration() {
     return duration;
   }
 }
