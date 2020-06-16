@@ -41,7 +41,7 @@ public final class FindMeetingQuery {
       int latestEnd = TimeRange.START_OF_DAY;
       if (eventsList.size() > 0) {
           Event first = eventsList.get(0);
-          if (request.getDuration() < first.getWhen().start()) {
+          if (request.getDuration() <= first.getWhen().start()) {
               mtIntervals.add(TimeRange.fromStartEnd(latestEnd, first.getWhen().start(), false));
           }
           latestEnd = eventsList.get(0).getWhen().end();
@@ -57,7 +57,7 @@ public final class FindMeetingQuery {
           }
       }
       //End of day
-      if (request.getDuration() < TimeRange.END_OF_DAY - latestEnd) {
+      if (request.getDuration() <= TimeRange.END_OF_DAY - latestEnd) {
           mtIntervals.add(TimeRange.fromStartEnd(latestEnd, TimeRange.END_OF_DAY, true));
       }
       return mtIntervals;
