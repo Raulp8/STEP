@@ -20,15 +20,31 @@ import com.google.sps.TimeRange.*;
 import com.google.sps.Event.*;
 
 public final class FindMeetingQuery {
+
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
+
+      Collection<TimeRange> optAndManQuery = internalQuery(events, request, true);
+       if (optAndManQuery.size() == 0 && request.getAttendees().size() == 0) {
+           return new ArrayList();
+       }
+      return optAndManQuery.size() > 0 ? optAndManQuery : internalQuery(events, request, false);
+  }
+
+  private Collection<TimeRange> internalQuery
+  (Collection<Event> events, MeetingRequest request, boolean optionalAttendees) {
 
       ArrayList<TimeRange> mtIntervals = new ArrayList();
       //Remove events with irrelevant people
       ArrayList<Event> eventsList = new ArrayList(events);
       eventsList.removeIf((Event event) -> {
-          for (String attendee: request.getAttendees()) {
-              if (event.getAttendees().contains(attendee)) {
-                  //keep, atleast one relevant person
+          for (String attendee: event.getAttendees()) {
+              boolean manAttendee = request.getAttendees().contains(attendee);
+              boolean keepEvent = optionalAttendees ? 
+                    manAttendee || request.getOptionalAttendees().contains(attendee) :
+                    manAttendee;
+              if (keepEvent) {
+                  //keep event, atleast one relevant person
                   return false;
               }
           }
@@ -36,13 +52,13 @@ public final class FindMeetingQuery {
           return true;
       });
       eventsList.sort(Event.ORDER_BY_START);
-
       //Keep Track of Latest Endpoint
       int latestEnd = TimeRange.START_OF_DAY;
       if (eventsList.size() > 0) {
           Event first = eventsList.get(0);
           if (request.getDuration() <= first.getWhen().start()) {
               mtIntervals.add(TimeRange.fromStartEnd(latestEnd, first.getWhen().start(), false));
+        
           }
           latestEnd = eventsList.get(0).getWhen().end();
       }
