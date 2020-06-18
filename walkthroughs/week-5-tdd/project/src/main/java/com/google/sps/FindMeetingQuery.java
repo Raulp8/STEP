@@ -16,12 +16,20 @@ package com.google.sps;
 
 import java.util.Collection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import com.google.sps.TimeRange.*;
 import com.google.sps.Event.*;
 
 public final class FindMeetingQuery {
-
-
+  public Collection<TimeRange> optQuery(Collection<Event> events, MeetingRequest request) {
+      Collection<TimeRange> optAndManQuery = internalQuery(events, request, true);
+       if (optAndManQuery.size() == 0 && request.getAttendees().size() == 0) {
+           return new ArrayList();
+       }
+      return optAndManQuery.size() > 0 ? 
+        optAndManQuery : 
+        optimizedQuery(events, request, internalQuery(events, request, false));
+  }
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
       Collection<TimeRange> optAndManQuery = internalQuery(events, request, true);
@@ -30,7 +38,6 @@ public final class FindMeetingQuery {
        }
       return optAndManQuery.size() > 0 ? optAndManQuery : internalQuery(events, request, false);
   }
-
   private Collection<TimeRange> internalQuery
   (Collection<Event> events, MeetingRequest request, boolean optionalAttendees) {
 
@@ -76,6 +83,42 @@ public final class FindMeetingQuery {
       if (request.getDuration() <= TimeRange.END_OF_DAY - latestEnd) {
           mtIntervals.add(TimeRange.fromStartEnd(latestEnd, TimeRange.END_OF_DAY, true));
       }
+      return mtIntervals;
+  }
+  private Collection<TimeRange> optimizedQuery (Collection<Event> events, MeetingRequest request, Collection<Event> potentialMeetings) {
+      HashMap<Event, Integer> optAttendCount = new HashMap();
+      //Count optional attendees in events
+      for (Event event: events) {
+          optAttendCount.put(event, 0);
+          for (String attendee: event.getAttendees()) {
+              boolean optAttendee = request.getOptionalAttendees().contains(attendee);
+              if (optAttendee) {
+                  optAttendCount.put(event, optAttendCount.get(event) + 1);
+              }
+          }
+          //remove, no optional attendees in count
+          optAttendCount.remove(event, 0);
+      }
+      HashMap<Event, Integer> manEventOptLoss = new HashMap();
+      Integer minLoss = Integer.MAX_VALUE; 
+      for (Event pMeeting: potentialMeetings) {
+          manEventOptLoss.put(pMeeting, 0);
+          optAttendCount.forEach((Event optAtttendEvent, Integer count) -> {
+              if (pMeeting.getWhen().overlaps(optAtttendEvent.getWhen())) {
+                  manEventOptLoss.put(pMeeting, manEventOptLoss.get(pMeeting) + count);
+              }
+          });
+          if (manEventOptLoss.get(pMeeting) <= minLoss) {
+              minLoss = manEventOptLoss.get(pMeeting);
+          }
+          else {
+              manEventOptLoss.remove(pMeeting);
+          }
+      }
+      ArrayList<TimeRange> mtIntervals = new ArrayList();
+      manEventOptLoss.forEach((Event optEvent, Integer count) -> {
+          mtIntervals.add(optEvent.getWhen());
+      });
       return mtIntervals;
   }
 
