@@ -85,7 +85,7 @@ public final class FindMeetingQuery {
       }
       return mtIntervals;
   }
-  private Collection<TimeRange> optimizedQuery (Collection<Event> events, MeetingRequest request, Collection<Event> potentialMeetings) {
+  private Collection<TimeRange> optimizedQuery (Collection<Event> events, MeetingRequest request, Collection<TimeRange> potentialMeetings) {
       HashMap<Event, Integer> optAttendCount = new HashMap();
       //Count optional attendees in events
       for (Event event: events) {
@@ -99,12 +99,12 @@ public final class FindMeetingQuery {
           //remove, no optional attendees in count
           optAttendCount.remove(event, 0);
       }
-      HashMap<Event, Integer> manEventOptLoss = new HashMap();
+      HashMap<TimeRange, Integer> manEventOptLoss = new HashMap();
       Integer minLoss = Integer.MAX_VALUE; 
-      for (Event pMeeting: potentialMeetings) {
+      for (TimeRange pMeeting: potentialMeetings) {
           manEventOptLoss.put(pMeeting, 0);
           optAttendCount.forEach((Event optAtttendEvent, Integer count) -> {
-              if (pMeeting.getWhen().overlaps(optAtttendEvent.getWhen())) {
+              if (pMeeting.overlaps(optAtttendEvent.getWhen())) {
                   manEventOptLoss.put(pMeeting, manEventOptLoss.get(pMeeting) + count);
               }
           });
@@ -116,8 +116,11 @@ public final class FindMeetingQuery {
           }
       }
       ArrayList<TimeRange> mtIntervals = new ArrayList();
-      manEventOptLoss.forEach((Event optEvent, Integer count) -> {
-          mtIntervals.add(optEvent.getWhen());
+      final Integer absoluteMin =  minLoss;
+      manEventOptLoss.forEach((TimeRange interval, Integer count) -> {
+          if (count == absoluteMin) {
+              mtIntervals.add(interval);
+          }
       });
       return mtIntervals;
   }

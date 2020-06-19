@@ -39,7 +39,7 @@ public final class FindMeetingQueryTest {
   // All dates are the first day of the year 2020.
   private static final int TIME_0800AM = TimeRange.getTimeInMinutes(8, 0);
   private static final int TIME_0830AM = TimeRange.getTimeInMinutes(8, 30);
-  private static final int TIME_0845AM = TimeRange.getTimeInMinutes(8, 30);
+  private static final int TIME_0845AM = TimeRange.getTimeInMinutes(8, 45);
   private static final int TIME_0900AM = TimeRange.getTimeInMinutes(9, 0);
   private static final int TIME_0930AM = TimeRange.getTimeInMinutes(9, 30);
   private static final int TIME_1000AM = TimeRange.getTimeInMinutes(10, 0);
@@ -407,6 +407,60 @@ public final class FindMeetingQueryTest {
 
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected = Arrays.asList();
+
+    Assert.assertEquals(expected, actual);
+  }
+  @Test
+  public void oneOptLost() {
+    // O.Events:       /-c-/
+    //                 /-b-/    /-c-/
+    // Events  : |--A--|  |--A--|  |--A-------|
+    // Day     : |----------------------------|
+    // Correct :                |--|
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
+            Arrays.asList(PERSON_B, PERSON_C)),
+        new Event("Event 3", TimeRange.fromStartEnd(TIME_0900AM, TIME_1000AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 4", TimeRange.fromStartEnd(TIME_1000AM, TIME_1100AM, false),
+            Arrays.asList(PERSON_C)),
+        new Event("Event 5", TimeRange.fromStartEnd(TIME_1100AM, TimeRange.END_OF_DAY, true),
+            Arrays.asList(PERSON_A)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), 
+        Arrays.asList(PERSON_C, PERSON_B), DURATION_30_MINUTES);
+
+    Collection<TimeRange> actual = query.optQuery(events, request);
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.fromStartEnd(TIME_1000AM, TIME_1100AM, false));
+
+    Assert.assertEquals(expected, actual);
+  }
+  @Test
+  public void noOptLost() {
+    // O.Events:       /-c-/
+    //                 /-b-/    /-c-/
+    // Events  : |--A--|  |--A--|  |--A--|
+    // Day     : |----------------------------|
+    // Correct :                         |----|
+    Collection<Event> events = Arrays.asList(
+        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 2", TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
+            Arrays.asList(PERSON_B, PERSON_C)),
+        new Event("Event 3", TimeRange.fromStartEnd(TIME_0900AM, TIME_1000AM, false),
+            Arrays.asList(PERSON_A)),
+        new Event("Event 4", TimeRange.fromStartEnd(TIME_1000AM, TIME_1100AM, false),
+            Arrays.asList(PERSON_C)),
+        new Event("Event 5", TimeRange.fromStartEnd(TIME_1100AM, TIME_1130AM, false),
+            Arrays.asList(PERSON_A)));
+
+    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), 
+        Arrays.asList(PERSON_C, PERSON_B), DURATION_30_MINUTES);
+
+    Collection<TimeRange> actual = query.optQuery(events, request);
+    Collection<TimeRange> expected = Arrays.asList(TimeRange.fromStartEnd(TIME_1130AM, TimeRange.END_OF_DAY, true));
 
     Assert.assertEquals(expected, actual);
   }
